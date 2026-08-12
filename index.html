@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Standortfreigabe</title>
+</head>
+<body>
+  <h2>Standort-Test</h2>
+  <p>Drücke den Button und erlaube den Standortzugriff.</p>
+
+  <button onclick="getLocation()">Standort freigeben</button>
+  <p id="result"></p>
+
+  <script>
+    function getLocation() {
+      if (!navigator.geolocation) {
+        document.getElementById("result").textContent =
+          "Standort wird nicht unterstützt.";
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const accuracy = Math.round(position.coords.accuracy);
+
+          document.getElementById("result").innerHTML =
+            "Standort erhalten!<br><br>" +
+            "Breitengrad: " + lat + "<br>" +
+            "Längengrad: " + lon + "<br>" +
+            "Genauigkeit: ca. " + accuracy + " m<br><br>" +
+            '<a href="https://www.google.com/maps?q=' +
+            lat + ',' + lon +
+            '" target="_blank">Auf Google Maps öffnen</a>';
+        },
+        function() {
+          document.getElementById("result").textContent =
+            "Standortzugriff wurde abgelehnt.";
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 0
+        }
+      );
+    }
+  </script>
+</body>
+</html>
